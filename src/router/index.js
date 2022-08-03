@@ -15,14 +15,14 @@ VueRouter.prototype.push = function(location,resolve,reject){
   if(reject && resolve){
     orifinPush.call(this,location,resolve,reject)
   }else{
-    orifinPush.call(this.location,()=>{},()=>{})
+    orifinPush.call(this,location,()=>{},()=>{})
   }
 }
 VueRouter.prototype.replace = function(location,resolve,reject){
   if(reject && resolve){
     orifinReplace.call(this,location,resolve,reject)
   }else{
-    orifinReplace.call(this.location,()=>{},()=>{})
+    orifinReplace.call(this,location,()=>{},()=>{})
   }
 }
 //配置路由

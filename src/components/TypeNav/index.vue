@@ -2,60 +2,62 @@
   <!-- 商品分类导航 -->
   <div class="type-nav">
     <div class="container">
-      <div @mouseleave="leaveIndex">
+      <div @mouseleave="leaveShow" @mouseenter="enterShow">
         <h2 class="all">全部商品分类</h2>
         <!-- 三级联动 -->
-        <div class="sort">
-          <!-- 利用事件委派+编程式导航实现路由的跳转和传递参数 -->
-          <div class="all-sort-list2" @click="goSearch">
-            <div
-              class="item"
-              v-for="(c1, index) in categoryList"
-              :key="c1.categoryId"
-              :class="{ cur: currentIndex === index }"
-            >
-              <h3 @mouseenter="changeIndex(index)">
-                <a
-                  :date-categoryName="c1.categoryName"
-                  :date-category1Id="c1.categoryId"
-                  >{{ c1.categoryName }}</a
-                >
-              </h3>
+        <transition name="sort">
+          <div class="sort" v-show="show">
+            <!-- 利用事件委派+编程式导航实现路由的跳转和传递参数 -->
+            <div class="all-sort-list2" @click="goSearch">
               <div
-                class="item-list clearfix"
-                :style="{ display: currentIndex == index ? 'block' : 'none' }"
+                class="item"
+                v-for="(c1, index) in categoryList"
+                :key="c1.categoryId"
+                :class="{ cur: currentIndex === index }"
               >
+                <h3 @mouseenter="changeIndex(index)">
+                  <a
+                    :date-categoryName="c1.categoryName"
+                    :date-category1Id="c1.categoryId"
+                    >{{ c1.categoryName }}</a
+                  >
+                </h3>
                 <div
-                  class="subitem"
-                  v-for="c2 in c1.categoryChild"
-                  :key="c2.categoryId"
+                  class="item-list clearfix"
+                  :style="{ display: currentIndex == index ? 'block' : 'none' }"
                 >
-                  <dl class="fore">
-                    <dt>
-                      <a
-                        :date-categoryName="c2.categoryName"
-                        :date-category2Id="c2.categoryId"
-                        >{{ c2.categoryName }}</a
-                      >
-                    </dt>
-                    <dd>
-                      <em
-                        v-for="c3 in c2.categoryChild"
-                        :key="c3.categoryChild"
-                      >
+                  <div
+                    class="subitem"
+                    v-for="c2 in c1.categoryChild"
+                    :key="c2.categoryId"
+                  >
+                    <dl class="fore">
+                      <dt>
                         <a
-                          :date-categoryName="c3.categoryName"
-                          :date-category3Id="c3.categoryId"
-                          >{{ c3.categoryName }}</a
+                          :date-categoryName="c2.categoryName"
+                          :date-category2Id="c2.categoryId"
+                          >{{ c2.categoryName }}</a
                         >
-                      </em>
-                    </dd>
-                  </dl>
+                      </dt>
+                      <dd>
+                        <em
+                          v-for="c3 in c2.categoryChild"
+                          :key="c3.categoryChild"
+                        >
+                          <a
+                            :date-categoryName="c3.categoryName"
+                            :date-category3Id="c3.categoryId"
+                            >{{ c3.categoryName }}</a
+                          >
+                        </em>
+                      </dd>
+                    </dl>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </transition>
       </div>
       <nav class="nav">
         <a href="###">服装城</a>
@@ -79,13 +81,15 @@ export default {
   data() {
     return {
       currentIndex: -1,
+      show: true,
     };
   },
   //组件挂载完毕就想服务器发送请求
   mounted() {
-    //通知Vuex发请求
-    this.$store.dispatch("categoryList");
-    // console.log(this.$store);
+    if (this.$route.path != "/home") {
+      console.log(this.$route.path);
+      this.show = false;
+    }
   },
   computed: {
     ...mapState({
@@ -100,8 +104,16 @@ export default {
     changeIndex: throttle(function (index) {
       this.currentIndex = index;
     }, 50),
-    leaveIndex() {
+    //当鼠标移出,移除背景颜色
+    leaveShow() {
       this.currentIndex = -1;
+      if (this.$route.path != "/home") {
+        this.show = false;
+      }
+    },
+    //当鼠标移入,修改show的值为true
+    enterShow() {
+      this.show = true;
     },
     //进行路由跳转的方法
     goSearch(event) {
@@ -129,9 +141,12 @@ export default {
         } else {
           query.category3Id = category3Id;
         }
-        location.query = query;
-        // console.log(location);
-        this.$router.push(location);
+        if (this.$route.params) {
+          location.params = this.$route.params;
+          location.query = query;
+          // console.log(location);
+          this.$router.push(location);
+        }
       }
     },
   },
@@ -258,6 +273,17 @@ export default {
         }
       }
     }
+
+    //过渡动画的样式
+    // .sort-enter{
+    //   height: 0px;
+    // }
+    // .sort-enter-to{
+    //   height: 461px;
+    // }
+    // .sort-enter-active{
+    //   transform: all .5s linear;
+    // }
   }
 }
 </style>

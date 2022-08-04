@@ -13,8 +13,12 @@ export default {
   name: "App",
   components: {
     Header,
-    Footer
-},
+    Footer,
+  },
+  mounted() {
+    //通知Vuex发请求
+    this.$store.dispatch("categoryList");
+  },
 };
 </script>
 

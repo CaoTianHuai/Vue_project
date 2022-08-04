@@ -52,8 +52,8 @@ export default new VueRouter({
     },
     //重定向
     {
-      path: "*",
-      component: Home,
+      path: "/",
+      redirect: "/home",
       meta: { show: true }
     }
   ]

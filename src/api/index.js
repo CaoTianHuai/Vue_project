@@ -11,3 +11,10 @@ export const reqCategoryList = ()=>request({
 
  //获取floor数据
  export const reqGetFloorList = ()=>mockRequest.get('/floor')
+
+ //搜索模块的接口
+ export const reqGetSearchInfo = (params)=>request({
+  url:"/list",
+  method:'POST',
+  data:params
+ })

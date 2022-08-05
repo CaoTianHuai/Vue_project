@@ -19,6 +19,10 @@ path:'/search/:keyword?'
 组件间通信的方式
 1)props:用户父子组件间通信
 2)自定义事件:$on $emit 可以实现子给父通信
+在main.js中配置
+beforeCreate(){
+    Vue.prototype.$bus = this
+  },
 3)全局事件总线:$bus 全能
 4)插槽
 5)vuex

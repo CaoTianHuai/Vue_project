@@ -8,3 +8,6 @@ export const reqCategoryList = ()=>request({
 })
  //获取banner(首页轮播图)
  export const reqGetBannerList = ()=>mockRequest.get('/banner')
+
+ //获取floor数据
+ export const reqGetFloorList = ()=>mockRequest.get('/floor')

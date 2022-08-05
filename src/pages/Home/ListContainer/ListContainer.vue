@@ -3,23 +3,7 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <div class="swiper-container" id="mySwiper">
-          <div class="swiper-wrapper">
-            <div
-              class="swiper-slide"
-              v-for="carousel in bannerList"
-              :key="carousel.id"
-            >
-              <img :src="carousel.imgUrl" />
-            </div>
-          </div>
-          <!-- 如果需要分页器 -->
-          <div class="swiper-pagination"></div>
-
-          <!-- 如果需要导航按钮 -->
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-        </div>
+        <Carousel :list="bannerList"></Carousel>
       </div>
       <div class="right">
         <div class="news">
@@ -97,44 +81,19 @@
 <script>
 import { mapState } from "vuex";
 import Swiper from "swiper";
+import Carousel from "@/components/Carousel/index.vue";
 export default {
-  name: "ListContainer",
-  mounted() {
-    this.$store.dispatch("getBannerList");
-  },
-  computed: {
-    ...mapState({
-      bannerList: (state) => {
-        return state.home.bannerList;
-      },
-    }),
-  },
-  watch: {
-    bannerList: {
-      handler(newValue, oldValue) {
-        //nextTick:将回调延迟到下次 DOM 更新循环之后执行。在修改数据之后立即使用它，然后等待 DOM 更新。它跟全局方法 Vue.nextTick 一样，不同的是回调的 this 自动绑定到调用它的实例上。
-        this.$nextTick(() => {
-          var mySwiper = new Swiper(
-            document.querySelector(".swiper-container"),
-            {
-              loop: true,
-              //如果需要分页器
-              pagination: {
-                el: ".swiper-pagination",
-                //点击小球切换页面
-                clickable: true,
-              },
-              //如果需要前进后退按钮
-              navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prec",
-              },
-            }
-          );
-        });
-      },
+    name: "ListContainer",
+    mounted() {
+        this.$store.dispatch("getBannerList");
     },
-  },
+    computed: {
+        ...mapState({
+            bannerList: (state) => {
+                return state.home.bannerList;
+            },
+        }),
+    },
 };
 </script>
 

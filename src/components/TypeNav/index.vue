@@ -87,7 +87,7 @@ export default {
   //组件挂载完毕就想服务器发送请求
   mounted() {
     if (this.$route.path != "/home") {
-      console.log(this.$route.path);
+      // console.log(this.$route.path);
       this.show = false;
     }
   },

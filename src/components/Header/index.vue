@@ -66,11 +66,16 @@ export default {
       // this.$router.push(`/search/${this.keyword}?k=${this.keyword}`)
       //第三种:对象形式的传参
       if (this.$route.query) {
-        let location = {name:"search",params:{keyword:this.keyword}}
+        let location = {name:"search",params:{keyword:this.keyword || undefined}}
         location.query = this.$route.query
         this.$router.push(location)
       }
     }
+  },
+  mounted(){
+    this.$bus.$on("clear",()=>{
+      this.keyword = ""
+    })
   }
 };
 </script>

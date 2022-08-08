@@ -7,7 +7,11 @@ import TypeNav from '@/components/TypeNav'
 Vue.component(TypeNav.name, TypeNav)
 //引入全局轮播图组件
 import Carousel from '@/components/Carousel'
-Vue.component(Carousel.name,Carousel)
+Vue.component(Carousel.name, Carousel)
+//全局分页组件
+import Pagination from '@/components/Pagination'
+Vue.component(Pagination.name, Pagination)
+
 //引入vuex仓库
 import store from '@/store/index'
 //引入MockServer.js---mock数据
@@ -28,7 +32,7 @@ new Vue({
   router,
   store,
   //配置全局事件总线
-  beforeCreate(){
+  beforeCreate() {
     Vue.prototype.$bus = this
   },
 }).$mount('#app')

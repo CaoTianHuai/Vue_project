@@ -18,3 +18,9 @@ export const reqCategoryList = ()=>request({
   method:'POST',
   data:params
  })
+ 
+ //商品详情的接口
+ export const reqGoodsInfo = (skuId)=>request({
+  url:`/item/${skuId}`,
+  method:'get'
+ })

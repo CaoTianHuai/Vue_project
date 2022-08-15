@@ -85,23 +85,38 @@
                 <dt class="title">{{ spuSaleAttr.saleAttrName }}</dt>
                 <dd
                   changepirce="0"
-                  :class="{active:spuSaleAttrValue.isChecked == 1}"
+                  :class="{ active: spuSaleAttrValue.isChecked == 1 }"
                   v-for="spuSaleAttrValue in spuSaleAttr.spuSaleAttrValueList"
                   :key="spuSaleAttrValue.id"
-                  @click="changeActive(spuSaleAttrValue,spuSaleAttr.spuSaleAttrValueList)"
+                  @click="
+                    changeActive(
+                      spuSaleAttrValue,
+                      spuSaleAttr.spuSaleAttrValueList
+                    )
+                  "
                 >
-                  {{spuSaleAttrValue.saleAttrValueName}}
+                  {{ spuSaleAttrValue.saleAttrValueName }}
                 </dd>
               </dl>
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input
+                  autocomplete="off"
+                  class="itxt"
+                  v-model="skuNum"
+                  @change="changeSkuNum"
+                />
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a
+                  href="javascript:"
+                  class="mins"
+                  @click="skuNum > 1 ? skuNum-- : (skuNum = 1)"
+                  >-</a
+                >
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click="addShopCar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -345,6 +360,11 @@ import Zoom from "./Zoom/Zoom";
 import { mapGetters } from "vuex";
 export default {
   name: "Detail",
+  data() {
+    return {
+      skuNum: 1,
+    };
+  },
   components: {
     ImageList,
     Zoom,
@@ -352,15 +372,40 @@ export default {
   mounted() {
     this.$store.dispatch("getGoodsInfo", this.$route.params.skuid);
   },
-  methods:{
-    changeActive(saleAttrValue,arr){
+  methods: {
+    changeActive(saleAttrValue, arr) {
       //遍历全部售卖属性的isChecked的值,将其修改为0
-      arr.forEach(item => {
-        item.isChecked = 0
+      arr.forEach((item) => {
+        item.isChecked = 0;
       });
       //点击的售卖属性的isChecked的值为1
-      saleAttrValue.isChecked = 1
-    }
+      saleAttrValue.isChecked = 1;
+    },
+    changeSkuNum() {
+      let value = this.skuNum * 1;
+      if (isNaN(value) || value < 1) {
+        this.skuNum = 1;
+      } else {
+        this.skuNum = parseInt(value);
+      }
+    },
+    async addShopCar(){
+      //1:发请求--将产品加入到数据库
+      try{
+        await this.$store.dispatch('addOrUpdateShopCart',{skuId:this.$route.params.skuid,skuNum:this.skuNum})
+        //进行路由跳转
+        //在路由跳转的时候还需要将产品的信息带给下一级路由组件
+        //一些简单的数据可以使用query或者params传递
+        //一些比较复杂的信息可以通过会话存储[不持久化,会话结束数据就消失]
+        //sessionStorage无法存储object类型的数据,需要将其转换为字符串
+        sessionStorage.setItem('SKUINFO',JSON.stringify(this.skuInfo))
+        this.$router.push({name:'addCartSuccess',query:{skuNum:this.skuNum}})
+      }catch(error){
+        console.log();
+      }
+      //2:服务器存储成功--进行路由跳转并传参
+      //3:失败,给用户进行提示
+    },
   },
   computed: {
     ...mapGetters(["categoryView", "skuInfo", "spuSaleAttrList"]),

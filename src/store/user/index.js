@@ -56,6 +56,9 @@ const actions = {
     let result = await reqUserInfo();
     if (result.code == 200) {
       commit('GETUSERINFO', result.data)
+      return 'OK'
+    }else{
+      return Promise.reject(new error('faile'))
     }
   },
   async getLogout({ commit }) {

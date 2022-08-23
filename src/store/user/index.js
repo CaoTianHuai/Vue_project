@@ -1,8 +1,8 @@
 import { reqGetCode, reqUserRegister, reqUserLogin, reqUserInfo, reqLogout } from '@/api'
-import { setToken, removeToken } from '@/utils/token'
+import { setToken, getToken ,removeToken } from '@/utils/token'
 const state = {
   code: '',
-  token: '',
+  token: localStorage.getItem('TOKEN'),
   userInfo: {}
 }
 const mutations = {

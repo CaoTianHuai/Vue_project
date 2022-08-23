@@ -80,3 +80,34 @@ export const reqCategoryList = ()=>request({
   url:'/user/passport/logout',
   method:'get'
  })
+
+ //获取用户地址信息
+ export const reqAddressInfo = ()=>request({
+  url:'/user/userAddress/auth/findUserAddressList',
+  method:'get'
+ })
+
+ //获取商品清单
+ export const reqOrderInfo = ()=>request({
+  url:'/order/auth/trade',
+  method:'get'
+ })
+
+ //提交订单的接口
+ export const reqSubmitOrder = (tradeNo,data)=>request({
+  url:`/order/auth/submitOrder?tradeNo=${tradeNo}`,
+  method:'post',
+  data
+ })
+
+ //获取支付信息
+ export const reqPayInfo = (orderId)=>request({
+  url:`/payment/weixin/createNative/${orderId}`,
+  method:'get'
+ })
+
+ //获取支付状态
+ export const reqPayStatus = (orderId)=>request({
+  url:`payment/weixin/queryPayStatus/${orderId}`,
+  method:'get'
+ })

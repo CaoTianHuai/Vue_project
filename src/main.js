@@ -24,6 +24,9 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 
+//统一接受api文件夹里面全部的请求函数
+import * as API from '@/api'
+
 Vue.config.productionTip = false
 
 new Vue({
@@ -34,5 +37,7 @@ new Vue({
   //配置全局事件总线
   beforeCreate() {
     Vue.prototype.$bus = this
+    //将API配置全局事件
+    Vue.prototype.$API = API
   },
 }).$mount('#app')

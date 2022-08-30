@@ -65,8 +65,13 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else {
-    //未登录
-    next()
+    //未登录:不能去交易相关/不能去支付相关/个人中心相关页面
+    let toPath = to.path
+    if (toPath.indexOf('/trade') != -1 || toPath.indexOf('/pay') != -1 || toPath.indexOf('/center') != -1) {
+      next('/login?redirect='+toPath)
+    } else {
+      next()
+    }
   }
 })
 //配置路由

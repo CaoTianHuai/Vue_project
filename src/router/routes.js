@@ -21,7 +21,7 @@ export default [
       {
         path: 'myOrder',
         component: MyOrder
-      }, 
+      },
       {
         path: 'groupOrder',
         component: GroupOrder
@@ -41,13 +41,28 @@ export default [
     path: '/pay',
     component: Pay,
     name: 'Pay',
-    meta: { show: true }
+    meta: { show: true },
+    beforeEnter: (to, from, next) => {
+      if (from.path == '/trade') {
+        next()
+      } else {
+        next(false)
+      }
+    }
   },
   {
     path: '/trade',
     component: Trade,
     name: 'trade',
-    meta: { show: true }
+    meta: { show: true },
+    beforeEnter: (to, from, next) => {
+      //去交易页面,必须是从购物车而来
+      if (from.path == '/shopCart') {
+        next()
+      } else {
+        next(false)
+      }
+    }
   },
   {
     path: '/shopCart',

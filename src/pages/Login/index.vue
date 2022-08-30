@@ -93,8 +93,13 @@ export default {
         const password = this.password;
         if (phone && password) {
           await this.$store.dispatch("userLogin", { phone, password });
-          //跳转到/home页面
-          this.$router.push("/home");
+          //登录的路由组件:看路由中是否包含query参数,如果跳到query指定的路由,没有跳到home
+          if (this.$route.query.redirect) {
+            let toPath = this.$route.query.redirect;
+            this.$router.push(toPath);
+          }else{
+            this.$router.push('/home')
+          }
         }
       } catch (error) {
         console.log(error.message);

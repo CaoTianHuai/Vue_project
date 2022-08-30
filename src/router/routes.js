@@ -9,7 +9,29 @@ import ShopCart from "@/pages/ShopCart"
 import Trade from '@/pages/Trade'
 import Pay from '@/pages/Pay'
 import PaySuccess from '@/pages/PaySuccess'
+import Center from '@/pages/Center'
+import MyOrder from '@/pages/Center/myOrder'
+import GroupOrder from '@/pages/Center/groupOrder'
 export default [
+  {
+    path: '/center',
+    component: Center,
+    meta: { show: true },
+    children: [
+      {
+        path: 'myOrder',
+        component: MyOrder
+      }, 
+      {
+        path: 'groupOrder',
+        component: GroupOrder
+      },
+      {
+        path: 'groupOrder',
+        redirect: '/center/myOrder'
+      },
+    ]
+  },
   {
     path: '/paySuccess',
     component: PaySuccess,
@@ -18,25 +40,25 @@ export default [
   {
     path: '/pay',
     component: Pay,
-    name:'Pay',
+    name: 'Pay',
     meta: { show: true }
   },
   {
     path: '/trade',
     component: Trade,
-    name:'trade',
+    name: 'trade',
     meta: { show: true }
   },
   {
     path: '/shopCart',
     component: ShopCart,
-    name:'shopCart',
+    name: 'shopCart',
     meta: { show: true }
   },
   {
     path: '/addCartSuccess',
     component: AddCartSuccess,
-    name:'addCartSuccess',
+    name: 'addCartSuccess',
     meta: { show: true }
   },
   {

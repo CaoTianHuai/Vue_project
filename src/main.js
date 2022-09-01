@@ -29,6 +29,9 @@ import * as API from '@/api'
 
 Vue.config.productionTip = false
 
+//引入vee-validate
+import "@/plugins/validate"
+
 new Vue({
   render: h => h(App),
   //注册路由信息
